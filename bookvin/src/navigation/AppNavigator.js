@@ -1,11 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Navigators
 import MainTabNavigator from './MainTabNavigator';
-
-// Screens
 import LoginScreen from '../screens/LoginScreen';
 import MyGarageScreen from '../screens/MyGarageScreen';
 import AddCarScreen from '../screens/AddCarScreen';
@@ -21,28 +19,29 @@ import AddDocumentScreen from '../screens/AddDocumentScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+  const isLoggedIn = useSelector(state => state.auth?.isLoggedIn);
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        {/* Screens outside the main tab navigator */}
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="MyGarage" component={MyGarageScreen} />
-        <Stack.Screen name="AddCar" component={AddCarScreen} />
-        <Stack.Screen name="CarInfo" component={CarInfoScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-        <Stack.Screen name="Checklist1" component={Checklist1Screen} />
-        <Stack.Screen name="Checklist2" component={Checklist2Screen} />
-        <Stack.Screen name="Checklist3" component={Checklist3Screen} />
-        <Stack.Screen name="Checklist4" component={Checklist4Screen} />
-        <Stack.Screen name="AddExpense" component={AddExpenseScreen} />
-        <Stack.Screen name="AddDocument" component={AddDocumentScreen} />
-
-        {/* Main Tab Navigator */}
-        <Stack.Screen 
-          name="Main" 
-          component={MainTabNavigator} 
-          options={{ headerShown: false }} // The tabs will have their own headers if needed
-        />
+      <Stack.Navigator>
+        {!isLoggedIn ? (
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        ) : (
+          <>
+            <Stack.Screen name="Main" component={MainTabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="MyGarage" component={MyGarageScreen} options={{ title: 'My Garage' }} />
+            <Stack.Screen name="AddCar" component={AddCarScreen} options={{ title: 'Add Car' }} />
+            <Stack.Screen name="EditCar" component={AddCarScreen} options={{ title: 'Edit Car' }} />
+            <Stack.Screen name="CarInfo" component={CarInfoScreen} options={{ title: 'Car Details' }} />
+            <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
+            <Stack.Screen name="Checklist1" component={Checklist1Screen} options={{ title: 'Step 1 of 4' }} />
+            <Stack.Screen name="Checklist2" component={Checklist2Screen} options={{ title: 'Step 2 of 4' }} />
+            <Stack.Screen name="Checklist3" component={Checklist3Screen} options={{ title: 'Step 3 of 4' }} />
+            <Stack.Screen name="Checklist4" component={Checklist4Screen} options={{ title: 'Step 4 of 4' }} />
+            <Stack.Screen name="AddExpense" component={AddExpenseScreen} options={{ title: 'Add Expense' }} />
+            <Stack.Screen name="AddDocument" component={AddDocumentScreen} options={{ title: 'Add Document' }} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );

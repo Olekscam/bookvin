@@ -12,7 +12,7 @@ const mandatoryItems = [
 const Checklist4Screen = ({ navigation }) => {
   const handleComplete = () => {
     // This is the final step, navigate to the main Service Center
-    navigation.navigate('ServiceCenter');
+    navigation.navigate('Main', { screen: 'Service' });
   };
 
   return (
