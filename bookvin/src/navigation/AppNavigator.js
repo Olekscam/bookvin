@@ -9,14 +9,22 @@ import MyGarageScreen from '../screens/MyGarageScreen';
 import AddCarScreen from '../screens/AddCarScreen';
 import CarInfoScreen from '../screens/CarInfoScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import Checklist1Screen from '../screens/Checklist1Screen';
-import Checklist2Screen from '../screens/Checklist2Screen';
-import Checklist3Screen from '../screens/Checklist3Screen';
-import Checklist4Screen from '../screens/Checklist4Screen';
 import AddExpenseScreen from '../screens/AddExpenseScreen';
 import AddDocumentScreen from '../screens/AddDocumentScreen';
 
+// AI Mechanic flow
+import AiMechanicStep1Screen from '../screens/AiMechanicStep1Screen';
+import AiMechanicLoadingScreen from '../screens/AiMechanicLoadingScreen';
+import AiMechanicStep2Screen from '../screens/AiMechanicStep2Screen';
+import AiMechanicPlanScreen from '../screens/AiMechanicPlanScreen';
+
 const Stack = createNativeStackNavigator();
+
+const DARK_HEADER = {
+  headerStyle: { backgroundColor: '#0D0D1A' },
+  headerTintColor: '#FFFFFF',
+  headerTitleStyle: { fontWeight: '600' },
+};
 
 const AppNavigator = () => {
   const isLoggedIn = useSelector(state => state.auth?.isLoggedIn);
@@ -34,12 +42,49 @@ const AppNavigator = () => {
             <Stack.Screen name="EditCar" component={AddCarScreen} options={{ title: 'Edit Car' }} />
             <Stack.Screen name="CarInfo" component={CarInfoScreen} options={{ title: 'Car Details' }} />
             <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Profile' }} />
-            <Stack.Screen name="Checklist1" component={Checklist1Screen} options={{ title: 'Step 1 of 4' }} />
-            <Stack.Screen name="Checklist2" component={Checklist2Screen} options={{ title: 'Step 2 of 4' }} />
-            <Stack.Screen name="Checklist3" component={Checklist3Screen} options={{ title: 'Step 3 of 4' }} />
-            <Stack.Screen name="Checklist4" component={Checklist4Screen} options={{ title: 'Step 4 of 4' }} />
             <Stack.Screen name="AddExpense" component={AddExpenseScreen} options={{ title: 'Add Expense' }} />
             <Stack.Screen name="AddDocument" component={AddDocumentScreen} options={{ title: 'Add Document' }} />
+
+            {/* AI Mechanic activation flow */}
+            <Stack.Screen
+              name="AiMechanicStep1"
+              component={AiMechanicStep1Screen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AiMechanicLoading1"
+              component={AiMechanicLoadingScreen}
+              options={{ headerShown: false }}
+              initialParams={{
+                title: 'Активація AI-Механіка',
+                headline: 'Попереднє ТО: AI-механік вивчає офіційний регламент обслуговування для вашого автомобіля.',
+                hint: 'Це може тривати до 30 секунд.',
+                nextRoute: 'AiMechanicStep2',
+                delayMs: 2500,
+              }}
+            />
+            <Stack.Screen
+              name="AiMechanicStep2"
+              component={AiMechanicStep2Screen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="AiMechanicLoading2"
+              component={AiMechanicLoadingScreen}
+              options={{ headerShown: false }}
+              initialParams={{
+                title: 'Новий план ТО',
+                headline: 'Ваш персональний план ТО формується. Він включає пропущені роботи та регламент.',
+                hint: 'Будь ласка, зачекайте.',
+                nextRoute: 'AiMechanicPlan',
+                delayMs: 2000,
+              }}
+            />
+            <Stack.Screen
+              name="AiMechanicPlan"
+              component={AiMechanicPlanScreen}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>

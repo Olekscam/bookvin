@@ -6,6 +6,7 @@ export default function DashboardScreen({ navigation }) {
   const user = useSelector(state => state.auth.user);
   const cars = useSelector(state => state.cars.list);
   const expenses = useSelector(state => state.expenses.list);
+  const aiPlan = useSelector(state => state.aiMechanic?.plan);
 
   const recentExpenses = expenses.slice(0, 3);
   const totalSpent = expenses.reduce((sum, e) => sum + (e.amount || 0), 0);
@@ -87,14 +88,25 @@ export default function DashboardScreen({ navigation }) {
       </View>
 
       {/* AI Mechanic CTA */}
-      <TouchableOpacity
-        style={styles.aiCard}
-        onPress={() => navigation.navigate('Checklist1')}
-      >
-        <Text style={styles.aiCardTitle}>🤖 AI Mechanic</Text>
-        <Text style={styles.aiCardDesc}>Run a full diagnostic checklist for your car</Text>
-        <Text style={styles.aiCardCta}>Start Checklist →</Text>
-      </TouchableOpacity>
+      {aiPlan ? (
+        <TouchableOpacity
+          style={styles.aiCard}
+          onPress={() => navigation.navigate('AiMechanicPlan')}
+        >
+          <Text style={styles.aiCardTitle}>🤖 AI-Механік</Text>
+          <Text style={styles.aiCardDesc}>Ваш план ТО сформовано</Text>
+          <Text style={styles.aiCardCta}>Переглянути план ТО →</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.aiCard}
+          onPress={() => navigation.navigate('AiMechanicStep1')}
+        >
+          <Text style={styles.aiCardTitle}>🤖 AI-Механік</Text>
+          <Text style={styles.aiCardDesc}>Пройдіть діагностику для отримання персонального плану ТО</Text>
+          <Text style={styles.aiCardCta}>Активувати →</Text>
+        </TouchableOpacity>
+      )}
     </ScrollView>
   );
 }

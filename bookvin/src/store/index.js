@@ -7,18 +7,20 @@ import authReducer from './slices/authSlice';
 import carsReducer from './slices/carsSlice';
 import expensesReducer from './slices/expensesSlice';
 import documentsReducer from './slices/documentsSlice';
+import aiMechanicReducer from './slices/aiMechanicSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   cars: carsReducer,
   expenses: expensesReducer,
   documents: documentsReducer,
+  aiMechanic: aiMechanicReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'cars', 'expenses', 'documents'],
+  whitelist: ['auth', 'cars', 'expenses', 'documents', 'aiMechanic'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
